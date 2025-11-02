@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.demo.AboutUsController"
+            stylesheets="@../styles.css"
+            prefWidth="800" prefHeight="600"
+            styleClass="root">
+
+    <VBox spacing="20" alignment="TOP_CENTER" prefWidth="800" prefHeight="600">
+
+        <HBox alignment="CENTER" styleClass="header-section" prefHeight="120">
+            <VBox alignment="CENTER" spacing="8">
+                <ImageView fx:id="logoImage" fitWidth="100" fitHeight="100" />
+                <Label text="About Us" styleClass="title-label" />
+            </VBox>
+        </HBox>
+
+        <VBox alignment="CENTER" spacing="10">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20" />
+            </padding>
+            <Label text="Welcome to Our Customer Management System!"
+                   wrapText="true"
+                   styleClass="section-label" />
+            <Text wrappingWidth="600" textAlignment="CENTER" styleClass="description-text">
+                We aim to provide an intuitive and user-friendly system that helps manage
+                customer information efficiently. Our goal is to combine simplicity with
+                powerful features to make your business operations smoother and smarter.
+            </Text>
+        </VBox>
+
+        <VBox alignment="CENTER" spacing="15">
+            <Label text="Meet Our Team" styleClass="section-label" />
+            <HBox spacing="30" alignment="CENTER">
+                <VBox alignment="CENTER" spacing="5">
+                    <ImageView fitWidth="100" fitHeight="100" styleClass="team-image" />
+                    <Label text="Yasmin Makhlouf" styleClass="team-name" />
+                    <Label text="Frontend Developer" styleClass="team-role" />
+                </VBox>
+
+                <VBox alignment="CENTER" spacing="5">
+                    <ImageView fitWidth="100" fitHeight="100" styleClass="team-image" />
+                    <Label text="Team Member 2" styleClass="team-name" />
+                    <Label text="Backend Engineer" styleClass="team-role" />
+                </VBox>
+
+                <VBox alignment="CENTER" spacing="5">
+                    <ImageView fitWidth="100" fitHeight="100" styleClass="team-image" />
+                    <Label text="Team Member 3" styleClass="team-name" />
+                    <Label text="UI Designer" styleClass="team-role" />
+                </VBox>
+            </HBox>
+        </VBox>
+
+        <VBox alignment="CENTER" spacing="5">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20" />
+            </padding>
+            <Label text="Want to know more? Contact us at:" styleClass="section-label" />
+            <Label text="Email: info@cmsystem.com" styleClass="contact-text" />
+            <Label text="Phone: +123 456 7890" styleClass="contact-text" />
+            <Label text="Address: 123 Main Street, City, Country" styleClass="contact-text" />
+        </VBox>
+
+        <HBox alignment="CENTER" styleClass="footer">
+            <Label text="© 2025 Customer Management System — All Rights Reserved." />
+        </HBox>
+
+    </VBox>
+
+</AnchorPane>

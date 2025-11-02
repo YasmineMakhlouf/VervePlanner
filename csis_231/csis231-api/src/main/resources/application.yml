@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/csis231_db_new
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update   # for dev; use validate in prod
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
