@@ -23,6 +23,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
 
+    /**
+     * Filters incoming requests to validate JWT tokens and set authentication.
+     *
+     * Centralized state management:
+     * - Retrieves JWT token from Authorization header.
+     * - Extracts username from JWT and loads user details.
+     * - Sets authenticated user in SecurityContextHolder if token is valid.
+     *
+     * Security & Validation:
+     * - Only processes requests without existing authentication.
+     * - Validates JWT token against user details.
+     * - Handles invalid JWT gracefully by logging errors.
+     *
+     * @param request     the incoming HTTP request
+     * @param response    the HTTP response
+     * @param filterChain the filter chain to pass control
+     * @throws ServletException in case of general servlet errors
+     * @throws IOException      in case of I/O errors
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {

@@ -14,6 +14,22 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Loads user details by username for Spring Security authentication.
+     *
+     * Centralized state management:
+     * - Retrieves user from database using UserRepository.
+     * - Maps user role to Spring Security authorities.
+     *
+     * Security & Validation:
+     * - Throws UsernameNotFoundException if the username does not exist.
+     * - Uses stored password hash for authentication verification.
+     * - Sets account as active, non-expired, and non-locked (no custom isActive field).
+     *
+     * @param username the username of the user attempting to log in
+     * @return UserDetails object containing username, password, and authorities
+     * @throws UsernameNotFoundException if the user does not exist
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
@@ -21,12 +37,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
-                .password(user.getPasswordHash())   // use passwordHash
-                .authorities(user.getRole())        // role as String
+                .password(user.getPasswordHash())
+                .authorities(user.getRole())
                 .accountExpired(false)
                 .accountLocked(false)
                 .credentialsExpired(false)
-                .disabled(false)                    // no isActive field
+                .disabled(false)
                 .build();
     }
 }
