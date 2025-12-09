@@ -1,69 +1,46 @@
 package com.csis231.api.user;
 
+import com.csis231.api.auth.LoginRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+    private final UserService service;
 
-    private final UserRepository repo;
-
-    public UserController(UserRepository repo) {
-        this.repo = repo;
+    public UserController(UserService service) {
+        this.service = service;
     }
 
     @GetMapping
     public List<User> all() {
-        return repo.findAll();
+        return service.getAllUsers();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public User create(@Valid @RequestBody User user) {
-        user.setCreatedAt(Instant.now());
-        return repo.save(user);
+        return service.createUser(user);
     }
 
     @GetMapping("/{id}")
     public User get(@PathVariable Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        return service.getUserById(id);
     }
 
     @PutMapping("/{id}")
     public User update(@PathVariable Long id, @Valid @RequestBody User user) {
-        User existing = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        existing.setUsername(user.getUsername());
-        existing.setEmail(user.getEmail());
-        existing.setPasswordHash(user.getPasswordHash());
-        existing.setRole(user.getRole());
-
-        return repo.save(existing);
+        return service.updateUser(id, user);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
-        repo.deleteById(id);
-    }
-
-    @PostMapping("/login")
-    public User login(@RequestBody LoginRequest loginRequest) {
-        User user = repo.findByUsername(loginRequest.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        if (!user.getPasswordHash().equals(loginRequest.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
-        }
-
-        return user;
+        service.deleteUser(id);
     }
 
 }

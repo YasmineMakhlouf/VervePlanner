@@ -9,45 +9,36 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/planner-users")
 public class PlannerUserController {
+    private final PlannerUserService service;
 
-    private final PlannerUserRepository repo;
-
-    public PlannerUserController(PlannerUserRepository repo) {
-        this.repo = repo;
+    public PlannerUserController(PlannerUserService service) {
+        this.service = service;
     }
 
     @GetMapping
     public List<PlannerUser> all() {
-        return repo.findAll();
+        return service.getAllPlannerUsers();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PlannerUser create(@Valid @RequestBody PlannerUser plannerUser) {
-        return repo.save(plannerUser);
+        return service.createPlannerUser(plannerUser);
     }
 
     @GetMapping("/{id}")
     public PlannerUser get(@PathVariable Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("PlannerUser not found"));
+        return service.getPlannerUserById(id);
     }
 
     @PutMapping("/{id}")
     public PlannerUser update(@PathVariable Long id, @Valid @RequestBody PlannerUser plannerUser) {
-        PlannerUser existing = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("PlannerUser not found"));
-
-        existing.setPlannerId(plannerUser.getPlannerId());
-        existing.setUserId(plannerUser.getUserId());
-        existing.setRole(plannerUser.getRole());
-
-        return repo.save(existing);
+        return service.updatePlannerUser(id, plannerUser);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
-        repo.deleteById(id);
+        service.deletePlannerUser(id);
     }
 }

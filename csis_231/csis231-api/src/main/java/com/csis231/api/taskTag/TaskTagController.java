@@ -9,28 +9,26 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/task-tags")
 public class TaskTagController {
+    private final TaskTagService service;
 
-    private final TaskTagRepository repo;
-
-    public TaskTagController(TaskTagRepository repo) {
-        this.repo = repo;
+    public TaskTagController(TaskTagService service) {
+        this.service = service;
     }
 
     @GetMapping
     public List<TaskTag> all() {
-        return repo.findAll();
+        return service.getAllTaskTags();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TaskTag create(@Valid @RequestBody TaskTag taskTag) {
-        return repo.save(taskTag);
+        return service.createTaskTag(taskTag);
     }
 
     @GetMapping("/{taskId}/{tagId}")
     public TaskTag get(@PathVariable Long taskId, @PathVariable Long tagId) {
-        return repo.findById(new TaskTagId(taskId, tagId))
-                .orElseThrow(() -> new RuntimeException("TaskTag not found"));
+        return service.getTaskTagById(taskId, tagId);
     }
 
     @PutMapping("/{taskId}/{tagId}")
@@ -38,12 +36,12 @@ public class TaskTagController {
             @PathVariable Long taskId,
             @PathVariable Long tagId,
             @Valid @RequestBody TaskTag taskTag) {
-        return repo.save(taskTag);
+        return service.updateTaskTag(taskId, tagId, taskTag);
     }
 
     @DeleteMapping("/{taskId}/{tagId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long taskId, @PathVariable Long tagId) {
-        repo.deleteById(new TaskTagId(taskId, tagId));
+        service.deleteTaskTag(taskId, tagId);
     }
 }

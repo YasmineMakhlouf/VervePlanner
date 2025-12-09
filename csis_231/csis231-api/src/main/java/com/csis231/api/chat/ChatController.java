@@ -9,41 +9,36 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/chats")
 public class ChatController {
-    private final ChatRepository repo;
+    private final ChatService service;
 
-    public ChatController(ChatRepository repo) {
-        this.repo = repo;
+    public ChatController(ChatService service) {
+        this.service = service;
     }
 
     @GetMapping
     public List<Chat> all() {
-        return repo.findAll();
+        return service.getAllChats();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Chat create(@Valid @RequestBody Chat chat) {
-        return repo.save(chat);
+        return service.createChat(chat);
     }
 
     @GetMapping("/{id}")
     public Chat get(@PathVariable Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Chat not found"));
+        return service.getChatById(id);
     }
 
     @PutMapping("/{id}")
     public Chat update(@PathVariable Long id, @Valid @RequestBody Chat chat) {
-        Chat existing = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Chat not found"));
-        existing.setPlannerId(chat.getPlannerId());
-        existing.setCreatedAt(chat.getCreatedAt());
-        return repo.save(existing);
+        return service.updateChat(id, chat);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
-        repo.deleteById(id);
+        service.deleteChat(id);
     }
 }

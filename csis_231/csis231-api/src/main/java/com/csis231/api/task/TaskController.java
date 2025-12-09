@@ -9,48 +9,36 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
+    private final TaskService service;
 
-    private final TaskRepository repo;
-
-    public TaskController(TaskRepository repo) {
-        this.repo = repo;
+    public TaskController(TaskService service) {
+        this.service = service;
     }
 
     @GetMapping
     public List<Task> all() {
-        return repo.findAll();
+        return service.getAllTasks();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Task create(@Valid @RequestBody Task task) {
-        return repo.save(task);
+        return service.createTask(task);
     }
 
     @GetMapping("/{id}")
     public Task get(@PathVariable Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+        return service.getTaskById(id);
     }
 
     @PutMapping("/{id}")
     public Task update(@PathVariable Long id, @Valid @RequestBody Task task) {
-        Task existing = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
-
-        existing.setPlannerId(task.getPlannerId());
-        existing.setTitle(task.getTitle());
-        existing.setDescription(task.getDescription());
-        existing.setStatus(task.getStatus());
-        existing.setPriority(task.getPriority());
-        existing.setDueDate(task.getDueDate());
-
-        return repo.save(existing);
+        return service.updateTask(id, task);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
-        repo.deleteById(id);
+        service.deleteTask(id);
     }
 }

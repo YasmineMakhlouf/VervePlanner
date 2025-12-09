@@ -1,9 +1,8 @@
 package com.csis231.api.auth;
 
-import com.csis231.api.user.LoginRequest;
-import com.csis231.api.user.RegisterRequest;
 import com.csis231.api.user.User;
 import com.csis231.api.user.UserRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +28,8 @@ public class AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    private static final String ADMIN_EMAIL = "admin@gmail.com";
+
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new RuntimeException("Username is already taken!");
@@ -42,7 +43,7 @@ public class AuthService {
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
-        user.setRole("USER"); // role as String
+        user.setRole(request.getEmail().equalsIgnoreCase(ADMIN_EMAIL) ? "ADMIN" : "USER");
         user.setCreatedAt(Instant.now());
 
         User savedUser = userRepository.save(user);
@@ -58,7 +59,7 @@ public class AuthService {
         );
     }
 
-    public AuthResponse login(LoginRequest request) {
+    public AuthResponse login(@Valid LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
@@ -66,6 +67,11 @@ public class AuthService {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User user = userRepository.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.getEmail().equalsIgnoreCase(ADMIN_EMAIL) && !"ADMIN".equals(user.getRole())) {
+            user.setRole("ADMIN");
+            userRepository.save(user);
+        }
 
         String token = jwtUtil.generateToken(user.getUsername());
 

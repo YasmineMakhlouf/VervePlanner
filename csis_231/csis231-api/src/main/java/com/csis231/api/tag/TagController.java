@@ -9,44 +9,36 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/tags")
 public class TagController {
+    private final TagService service;
 
-    private final TagRepository repo;
-
-    public TagController(TagRepository repo) {
-        this.repo = repo;
+    public TagController(TagService service) {
+        this.service = service;
     }
 
     @GetMapping
     public List<Tag> all() {
-        return repo.findAll();
+        return service.getAllTags();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Tag create(@Valid @RequestBody Tag tag) {
-        return repo.save(tag);
+        return service.createTag(tag);
     }
 
     @GetMapping("/{id}")
     public Tag get(@PathVariable Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tag not found"));
+        return service.getTagById(id);
     }
 
     @PutMapping("/{id}")
     public Tag update(@PathVariable Long id, @Valid @RequestBody Tag tag) {
-        Tag existing = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tag not found"));
-
-        existing.setPlannerId(tag.getPlannerId());
-        existing.setName(tag.getName());
-
-        return repo.save(existing);
+        return service.updateTag(id, tag);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
-        repo.deleteById(id);
+        service.deleteTag(id);
     }
 }

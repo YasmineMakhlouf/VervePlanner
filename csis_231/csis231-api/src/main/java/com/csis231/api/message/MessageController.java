@@ -9,37 +9,36 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/messages")
 public class MessageController {
-    private final MessageRepository repo;
-    public MessageController(MessageRepository repo) { this.repo = repo; }
+    private final MessageService service;
+
+    public MessageController(MessageService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public List<Message> all() {
-        return repo.findAll();
+        return service.getAllMessages();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Message create(@Valid @RequestBody Message message) {
-        return repo.save(message);
+        return service.createMessage(message);
     }
 
     @GetMapping("/{id}")
     public Message get(@PathVariable Long id) {
-        return repo.findById(id).orElseThrow(() -> new RuntimeException("Message not found"));
+        return service.getMessageById(id);
     }
 
     @PutMapping("/{id}")
     public Message update(@PathVariable Long id, @Valid @RequestBody Message message) {
-        Message existing = repo.findById(id).orElseThrow(() -> new RuntimeException("Message not found"));
-        existing.setChatId(message.getChatId());
-        existing.setSenderId(message.getSenderId());
-        existing.setContent(message.getContent());
-        return repo.save(existing);
+        return service.updateMessage(id, message);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
-        repo.deleteById(id);
+        service.deleteMessage(id);
     }
 }

@@ -9,37 +9,36 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/habit-entries")
 public class HabitEntryController {
-    private final HabitEntryRepository repo;
-    public HabitEntryController(HabitEntryRepository repo) { this.repo = repo; }
+    private final HabitEntryService service;
+
+    public HabitEntryController(HabitEntryService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public List<HabitEntry> all() {
-        return repo.findAll();
+        return service.getAllEntries();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public HabitEntry create(@Valid @RequestBody HabitEntry habitEntry) {
-        return repo.save(habitEntry);
+        return service.createEntry(habitEntry);
     }
 
     @GetMapping("/{id}")
     public HabitEntry get(@PathVariable Long id) {
-        return repo.findById(id).orElseThrow(() -> new RuntimeException("Habit entry not found"));
+        return service.getEntryById(id);
     }
 
     @PutMapping("/{id}")
     public HabitEntry update(@PathVariable Long id, @Valid @RequestBody HabitEntry habitEntry) {
-        HabitEntry existing = repo.findById(id).orElseThrow(() -> new RuntimeException("Habit entry not found"));
-        existing.setHabitId(habitEntry.getHabitId());
-        existing.setEntryDate(habitEntry.getEntryDate());
-        existing.setCompleted(habitEntry.getCompleted());
-        return repo.save(existing);
+        return service.updateEntry(id, habitEntry);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
-        repo.deleteById(id);
+        service.deleteEntry(id);
     }
 }
