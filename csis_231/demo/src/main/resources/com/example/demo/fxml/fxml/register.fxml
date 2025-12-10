@@ -1,14 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.demo.RegisterController"
+            stylesheets="@../styles.css"
+            prefWidth="800" prefHeight="600"
+            styleClass="root">
+
+    <VBox spacing="30" alignment="TOP_CENTER" prefWidth="800" prefHeight="600">
+
+        <HBox alignment="CENTER" styleClass="header-section" prefHeight="120">
+            <VBox alignment="CENTER" spacing="8">
+                <Label text="Register" styleClass="title-label"/>
+            </VBox>
+        </HBox>
+
+        <VBox spacing="15" alignment="CENTER" prefWidth="400">
+            <TextField fx:id="emailField" promptText="Email" prefWidth="400" styleClass="form-field"/>
+            <TextField fx:id="usernameField" promptText="Username" prefWidth="400" styleClass="form-field"/>
+            <PasswordField fx:id="passwordField" promptText="Password" prefWidth="400" styleClass="form-field"/>
+            <PasswordField fx:id="confirmPasswordField" promptText="Confirm Password" prefWidth="400" styleClass="form-field"/>
+
+            <Button text="Register" onAction="#handleRegister" prefWidth="400" styleClass="primary-button"/>
+            <Button text="Back to Login" onAction="#goToLogin" prefWidth="400" styleClass="secondary-button"/>
+
+            <Label fx:id="errorLabel" textFill="red" styleClass="description-text"/>
+        </VBox>
+
+        <HBox alignment="CENTER" styleClass="footer">
+            <Label text="© 2025 Verve Planner — All Rights Reserved."/>
+        </HBox>
+
+    </VBox>
 
 </AnchorPane>

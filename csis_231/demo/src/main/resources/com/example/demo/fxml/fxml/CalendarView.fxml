@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.demo.CalendarController"
+      spacing="15" alignment="TOP_CENTER"
+      style="-fx-background-color: #fff7f9;" prefWidth="900" prefHeight="700">
 
-</AnchorPane>
+    <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10;">
+        <Button fx:id="backButton" text="← Back" style="-fx-font-weight: bold; -fx-background-color: #ff6f91; -fx-text-fill: white; -fx-background-radius: 8;"/>
+    </HBox>
+
+    <HBox spacing="15" alignment="CENTER" style="-fx-padding: 15; -fx-background-color: #ffdee3; -fx-background-radius: 15; -fx-border-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4,0,2,2);">
+        <Button fx:id="prevMonthButton" text="◀" style="-fx-background-color: #ffe6f0; -fx-text-fill: #ff6f91; -fx-font-weight: bold; -fx-background-radius: 10;"/>
+        <Label fx:id="monthLabel" text="November 2025" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #ff6f91;"/>
+        <Button fx:id="nextMonthButton" text="▶" style="-fx-background-color: #ffe6f0; -fx-text-fill: #ff6f91; -fx-font-weight: bold; -fx-background-radius: 10;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Slider fx:id="zoomSlider" min="50" max="200" value="100" showTickLabels="true" showTickMarks="true" style="-fx-pref-width: 200;"/>
+    </HBox>
+
+    <AnchorPane fx:id="chartRoot"
+                prefWidth="600"
+                prefHeight="400"/>
+
+    <GridPane fx:id="calendarGrid" hgap="10" vgap="10" alignment="CENTER" style="-fx-padding: 15; -fx-background-color: #fff0f4; -fx-background-radius: 15; -fx-border-radius: 15;">
+        <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/>
+        </padding>
+    </GridPane>
+</VBox>

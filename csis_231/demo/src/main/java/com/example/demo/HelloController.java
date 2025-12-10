@@ -2,33 +2,32 @@ package com.example.demo;
 
 import com.example.demo.api.BackendClient;
 import com.example.demo.model.AuthResponse;
-import com.example.demo.model.Customer;
+import com.example.demo.model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.List;
 
 public class HelloController {
+
     @FXML
     private Label welcomeText;
 
     @FXML
-    private TableView<Customer> customerTable;
+    private TableView<User> userTable;
 
     @FXML
-    private TableColumn<Customer, String> nameColumn;
+    private TableColumn<User, String> usernameColumn;
 
     @FXML
-    private TableColumn<Customer, String> emailColumn;
+    private TableColumn<User, String> emailColumn;
 
     @FXML
     private Button addButton;
@@ -42,70 +41,68 @@ public class HelloController {
     @FXML
     private Button refreshButton;
 
-    private BackendClient api;
-    private AuthResponse authResponse;
-    private final ObservableList<Customer> customers = FXCollections.observableArrayList();
+    @FXML
+    private Button statsButton;
 
+    private BackendClient api;
     public void setBackendClient(BackendClient backendClient) {
         this.api = backendClient;
     }
+    private AuthResponse authResponse;
 
-    public void setAuthResponse(AuthResponse authResponse) {
-        this.authResponse = authResponse;
-        if (welcomeText != null) {
-            welcomeText.setText("Welcome, " + authResponse.getUsername() + "!");
-        }
-    }
+    private final ObservableList<User> users = FXCollections.observableArrayList();
+
     @FXML
-    public void initialize(){
-        // Configure table columns with custom cell value factories
-        nameColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getName()));
-        emailColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getEmail()));
-
-        // Set table data
-        customerTable.setItems(customers);
-
-        // Configure column sorting
-        nameColumn.setSortable(true);
+    public void initialize() {
+        usernameColumn.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getUsername()));
+        emailColumn.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getEmail()));
+        userTable.setItems(users);
+        usernameColumn.setSortable(true);
         emailColumn.setSortable(true);
+    }
 
+    public void initData(BackendClient backendClient, AuthResponse authResponse) {
+        this.api = backendClient;
+        this.authResponse = authResponse;
+        welcomeText.setText("Welcome, " + authResponse.getUsername() + "!");
         reload();
     }
 
     @FXML
-    protected void onAddCustomer() {
-        showCustomerForm(null);
+    protected void onAddUser() {
+        showUserForm(null);
     }
 
     @FXML
-    protected void onEditCustomer() {
-        Customer selected = customerTable.getSelectionModel().getSelectedItem();
+    protected void onEditUser() {
+        User selected = userTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            new Alert(Alert.AlertType.WARNING, "Please select a customer to edit").showAndWait();
+            new Alert(Alert.AlertType.WARNING, "Please select a user to edit").showAndWait();
             return;
         }
-        showCustomerForm(selected);
+        showUserForm(selected);
     }
 
     @FXML
-    protected void onDeleteCustomer() {
-        Customer selected = customerTable.getSelectionModel().getSelectedItem();
+    protected void onDeleteUser() {
+        User selected = userTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            new Alert(Alert.AlertType.WARNING, "Please select a customer to delete").showAndWait();
+            new Alert(Alert.AlertType.WARNING, "Please select a user to delete").showAndWait();
             return;
         }
-
-        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION,
+                "Are you sure you want to delete: " + selected.getUsername() + "?");
         confirmAlert.setTitle("Confirm Delete");
-        confirmAlert.setHeaderText("Delete Customer");
-        confirmAlert.setContentText("Are you sure you want to delete " + selected.getName() + "?");
-
-        if (confirmAlert.showAndWait().orElse(null) == javafx.scene.control.ButtonType.OK) {
+        confirmAlert.setHeaderText("Delete User");
+        if (confirmAlert.showAndWait().orElse(null) == ButtonType.OK) {
             try {
-                api.deleteCustomer(selected.getId());
+                api.deleteUser(selected.getId());
                 reload();
             } catch (Exception e) {
-                new Alert(Alert.AlertType.ERROR, "Failed to delete customer: " + e.getMessage()).showAndWait();
+                new Alert(Alert.AlertType.ERROR,
+                        "Failed to delete user: " + e.getMessage()).showAndWait();
             }
         }
     }
@@ -115,32 +112,74 @@ public class HelloController {
         reload();
     }
 
-    private void showCustomerForm(Customer customer) {
+    private void showUserForm(User user) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/fxml/fxml/customer-form.fxml"));
-            Scene scene = new Scene(loader.load(), 400, 300);
-            scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
-
-            CustomerFormController controller = loader.getController();
-            controller.setCustomer(customer);
-            controller.setOnCustomerSaved(this::reload);
-
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/fxml/fxml/user-form.fxml"));
+            Scene scene = new Scene(loader.load(), 400, 320);
+            URL css = getClass().getResource("/com/example/demo/styles.css");
+            if (css != null) scene.getStylesheets().add(css.toExternalForm());
+            UserFormController controller = loader.getController();
+            controller.setUser(user);
+            controller.setOnUserSaved(this::reload);
             Stage stage = new Stage();
-            stage.setTitle(customer == null ? "Add Customer" : "Edit Customer");
+            stage.setTitle(user == null ? "Add User" : "Edit User");
             stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            new Alert(Alert.AlertType.ERROR, "Failed to open customer form: " + e.getMessage()).showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Failed to open user form: " + e.getMessage()).showAndWait();
+            e.printStackTrace();
         }
     }
 
-    private void reload(){
-        customers.clear();
-        try{
-            customers.addAll(api.fetchCustomers());
-        }catch(Exception e){
-            new Alert(Alert.AlertType.ERROR, "Failed to load customers "+e.getMessage()).showAndWait();
+    public void reload() {
+        if (api == null) {
+            new Alert(Alert.AlertType.ERROR, "BackendClient is not set! Cannot reload users.").showAndWait();
+            return;
+        }
+        users.clear();
+        try {
+            List<User> fetched = api.fetchUsers();
+            users.addAll(fetched);
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to load users: " + e.getMessage()).showAndWait();
         }
     }
+
+    @FXML
+    protected void onStats() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/fxml/fxml/animation3d-users-view.fxml"));
+            Scene scene = new Scene(loader.load(), 900, 600);
+            URL css = getClass().getResource("/com/example/demo/styles.css");
+            if (css != null) scene.getStylesheets().add(css.toExternalForm());
+
+            Animation3DUsersController controller = loader.getController();
+            controller.setBackendClient(api); // pass the same BackendClient
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("3D User Statistics");
+            stage.show();
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to open stats: " + e.getMessage()).showAndWait();
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void onLogout() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/fxml/fxml/login.fxml"));
+            Scene scene = new Scene(loader.load(), 800, 600);
+
+            Stage stage = (Stage) userTable.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle("Login");
+            stage.show();
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to logout: " + e.getMessage()).showAndWait();
+        }
+    }
+
 }

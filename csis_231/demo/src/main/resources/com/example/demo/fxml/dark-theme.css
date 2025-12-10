@@ -1,0 +1,67 @@
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #121212, #1e1e1e);
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.header-section {
+    -fx-background-color: #2c2c2c;
+    -fx-border-color: #444444;
+    -fx-border-width: 0 0 2 0;
+}
+
+.title-label {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ff80ab;
+    -fx-padding: 0 0 5 0;
+}
+
+.section-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #eeeeee;
+    -fx-padding: 0 0 10 0;
+}
+
+.primary-button {
+    -fx-background-color: linear-gradient(to bottom right, #ff4081, #e91e63);
+    -fx-text-fill: white;
+    -fx-font-weight: 600;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+.primary-button:hover {
+    -fx-background-color: #d81b60;
+}
+.primary-button:pressed {
+    -fx-background-color: #ad1457;
+}
+
+.form-field {
+    -fx-background-color: #2a2a2a;
+    -fx-border-color: #ff80ab;
+    -fx-border-width: 1.2px;
+    -fx-border-radius: 6px;
+    -fx-padding: 12 15;
+    -fx-font-size: 14px;
+    -fx-text-fill: #ffffff;
+}
+.form-field:focused {
+    -fx-border-color: #ff4081;
+    -fx-border-width: 2px;
+}
+
+.label {
+    -fx-text-fill: #f5f5f5;
+}
+
+.footer {
+    -fx-background-color: #2c2c2c;
+    -fx-border-color: #444444;
+    -fx-border-width: 2 0 0 0;
+    -fx-padding: 10;
+    -fx-text-fill: #ff80ab;
+    -fx-font-size: 13px;
+}

@@ -1,10 +1,11 @@
 package com.example.demo.api;
 
-import com.example.demo.model.Customer;
+import com.example.demo.model.User;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -21,13 +22,16 @@ public class BackendClient {
 
     public BackendClient() {
         Properties props = new Properties();
-        try {
-            props.load(getClass().getResourceAsStream("/client.properties"));
+        try (InputStream is = getClass().getResourceAsStream("/client.properties")) {
+            if (is == null) throw new RuntimeException("client.properties not found in resources");
+            props.load(is);
             this.baseUrl = props.getProperty("backend.baseUrl", "http://localhost:8080");
         } catch (IOException e) {
             throw new RuntimeException("Failed to load client.properties", e);
         }
+        System.out.println("Backend URL: " + this.baseUrl); // Debugging
     }
+
     public void setAuthToken(String token) {
         this.authToken = token;
     }
@@ -43,28 +47,32 @@ public class BackendClient {
         return builder;
     }
 
-    public List<Customer> fetchCustomers() throws IOException, InterruptedException {
+    // ======================
+    // USER API METHODS
+    // ======================
+
+    public List<User> fetchUsers() throws IOException, InterruptedException {
         HttpRequest req = withAuth(HttpRequest.newBuilder())
                 .uri(URI.create(baseUrl + "/api/users"))
                 .GET()
                 .build();
 
         HttpResponse<String> resp = http.send(req, HttpResponse.BodyHandlers.ofString());
-        return mapper.readValue(resp.body(), new TypeReference<>(){});
+        return mapper.readValue(resp.body(), new TypeReference<>() {});
     }
 
-    public Customer getCustomer(Long id) throws IOException, InterruptedException {
+    public User getUser(Long id) throws IOException, InterruptedException {
         HttpRequest req = withAuth(HttpRequest.newBuilder())
                 .uri(URI.create(baseUrl + "/api/users/" + id))
                 .GET()
                 .build();
 
         HttpResponse<String> resp = http.send(req, HttpResponse.BodyHandlers.ofString());
-        return mapper.readValue(resp.body(), Customer.class);
+        return mapper.readValue(resp.body(), User.class);
     }
 
-    public Customer createCustomer(Customer customer) throws IOException, InterruptedException {
-        String json = mapper.writeValueAsString(customer);
+    public User createUser(User user) throws IOException, InterruptedException {
+        String json = mapper.writeValueAsString(user);
         HttpRequest req = withAuth(HttpRequest.newBuilder())
                 .uri(URI.create(baseUrl + "/api/users"))
                 .header("Content-Type", "application/json")
@@ -72,11 +80,11 @@ public class BackendClient {
                 .build();
 
         HttpResponse<String> resp = http.send(req, HttpResponse.BodyHandlers.ofString());
-        return mapper.readValue(resp.body(), Customer.class);
+        return mapper.readValue(resp.body(), User.class);
     }
 
-    public Customer updateCustomer(Long id, Customer customer) throws IOException, InterruptedException {
-        String json = mapper.writeValueAsString(customer);
+    public User updateUser(Long id, User user) throws IOException, InterruptedException {
+        String json = mapper.writeValueAsString(user);
         HttpRequest req = withAuth(HttpRequest.newBuilder())
                 .uri(URI.create(baseUrl + "/api/users/" + id))
                 .header("Content-Type", "application/json")
@@ -84,10 +92,10 @@ public class BackendClient {
                 .build();
 
         HttpResponse<String> resp = http.send(req, HttpResponse.BodyHandlers.ofString());
-        return mapper.readValue(resp.body(), Customer.class);
+        return mapper.readValue(resp.body(), User.class);
     }
 
-    public void deleteCustomer(Long id) throws IOException, InterruptedException {
+    public void deleteUser(Long id) throws IOException, InterruptedException {
         HttpRequest req = withAuth(HttpRequest.newBuilder())
                 .uri(URI.create(baseUrl + "/api/users/" + id))
                 .DELETE()
@@ -101,5 +109,9 @@ public class BackendClient {
 
     public String getAuthToken() {
         return authToken;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
     }
 }

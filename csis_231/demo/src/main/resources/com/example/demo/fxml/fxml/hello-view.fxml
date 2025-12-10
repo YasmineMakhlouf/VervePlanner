@@ -10,8 +10,12 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Priority?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.demo.HelloController">
-    <top>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.demo.HelloController"
+            stylesheets="@../styles.css"
+            styleClass="root">
+
+<top>
         <VBox spacing="15.0" styleClass="header-section">
             <padding>
                 <Insets bottom="20.0" left="30.0" right="30.0" top="30.0"/>
@@ -20,10 +24,13 @@
             <Label fx:id="welcomeText" text="User Management System" styleClass="title-label"/>
             
             <HBox alignment="CENTER_LEFT" spacing="15.0">
-                <Button fx:id="addButton" text="+ Add Customer" onAction="#onAddCustomer" styleClass="primary-button"/>
-                <Button fx:id="editButton" text="✏ Edit" onAction="#onEditCustomer" styleClass="secondary-button"/>
-                <Button fx:id="deleteButton" text="🗑 Delete" onAction="#onDeleteCustomer" styleClass="danger-button"/>
+                <Button fx:id="addButton" text="+ Add Customer" onAction="#onAddUser" styleClass="primary-button"/>
+                <Button fx:id="editButton" text="✏ Edit" onAction="#onEditUser" styleClass="secondary-button"/>
                 <Button fx:id="refreshButton" text="🔄 Refresh" onAction="#onRefresh" styleClass="secondary-button"/>
+                <Button fx:id="statsButton" text="📊 Stats" onAction="#onStats" styleClass="secondary-button"/>
+                <Button fx:id="deleteButton" text="🗑 Delete" onAction="#onDeleteUser" styleClass="danger-button"/>
+                <Button fx:id="logoutButton" text="🚪 Logout" onAction="#onLogout" styleClass="danger-button"/>
+
             </HBox>
         </VBox>
     </top>
@@ -35,9 +42,9 @@
             </padding>
             
             <Label text="User List" styleClass="section-label"/>
-            <TableView fx:id="customerTable" VBox.vgrow="ALWAYS" styleClass="customer-table">
+            <TableView fx:id="userTable" VBox.vgrow="ALWAYS" styleClass="user-table">
                 <columns>
-                    <TableColumn fx:id="nameColumn" text="Name" prefWidth="250" styleClass="table-column"/>
+                    <TableColumn fx:id="usernameColumn" text="Username" prefWidth="250" styleClass="table-column"/>
                     <TableColumn fx:id="emailColumn" text="Email" prefWidth="350" styleClass="table-column"/>
                 </columns>
             </TableView>

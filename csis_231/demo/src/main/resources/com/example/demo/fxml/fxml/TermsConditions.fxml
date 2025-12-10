@@ -1,14 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.demo.TermsConditionsController"
+            stylesheets="@../styles.css"
+            prefWidth="800" prefHeight="600"
+            styleClass="root">
+
+    <VBox spacing="20" alignment="TOP_CENTER" prefWidth="800" prefHeight="600">
+
+        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10;">
+            <Button fx:id="backButton" text="← Back" style="-fx-font-weight: bold; -fx-background-color: #ff6f91; -fx-text-fill: white; -fx-background-radius: 8;"/>
+        </HBox>
+
+        <HBox alignment="CENTER" styleClass="header-section" prefHeight="120">
+            <VBox alignment="CENTER" spacing="8">
+                <Label text="Terms and Conditions" styleClass="title-label" />
+            </VBox>
+        </HBox>
+
+        <ScrollPane fitToWidth="true" prefHeight="400" prefWidth="700" styleClass="scroll-pane">
+            <VBox spacing="15" alignment="TOP_LEFT">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+
+                <Label text="Welcome to Verve Planner" styleClass="section-label" />
+
+                <Text wrappingWidth="660" textAlignment="JUSTIFY" styleClass="description-text">
+                    By using Verve Planner, you agree to comply with and be bound by the following terms and conditions.
+                    Please read them carefully before using the application.
+                </Text>
+
+                <Label text="1. User Responsibilities" styleClass="subsection-label" />
+                <Text wrappingWidth="660" textAlignment="JUSTIFY" styleClass="description-text">
+                    Users must use the application for personal productivity purposes only and should not attempt
+                    to misuse or manipulate the software in ways that could harm the application or other users.
+                </Text>
+
+                <Label text="2. Data Handling" styleClass="subsection-label" />
+                <Text wrappingWidth="660" textAlignment="JUSTIFY" styleClass="description-text">
+                    Verve Planner stores user data locally on your device. We do not share, sell, or transmit
+                    your personal data to third parties.
+                </Text>
+
+                <Label text="3. Liability" styleClass="subsection-label" />
+                <Text wrappingWidth="660" textAlignment="JUSTIFY" styleClass="description-text">
+                    Verve Planner is provided as-is. We are not responsible for any data loss or device issues
+                    that may occur while using the application.
+                </Text>
+
+                <Label text="4. Updates to Terms" styleClass="subsection-label" />
+                <Text wrappingWidth="660" textAlignment="JUSTIFY" styleClass="description-text">
+                    We may update these Terms and Conditions occasionally. Updated terms will be reflected within
+                    the app, and continued use indicates acceptance.
+                </Text>
+
+                <Label text="5. Contact Us" styleClass="subsection-label" />
+                <Text wrappingWidth="660" textAlignment="JUSTIFY" styleClass="description-text">
+                    If you have any questions about these terms, please contact us at: info@vplanner.com
+                </Text>
+            </VBox>
+        </ScrollPane>
+
+        <HBox alignment="CENTER" styleClass="footer">
+            <Label text="© 2025 Verve Planner — All Rights Reserved." />
+        </HBox>
+
+    </VBox>
 
 </AnchorPane>

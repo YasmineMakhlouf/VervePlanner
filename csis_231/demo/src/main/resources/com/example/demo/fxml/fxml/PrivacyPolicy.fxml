@@ -1,14 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.demo.PrivacyPolicyController"
+            stylesheets="@../styles.css"
+            prefWidth="800" prefHeight="600"
+            styleClass="root">
+
+    <VBox spacing="20" alignment="TOP_CENTER" prefWidth="800" prefHeight="600">
+
+        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10;">
+            <Button fx:id="backButton" text="← Back" style="-fx-font-weight: bold; -fx-background-color: #ff6f91; -fx-text-fill: white; -fx-background-radius: 8;"/>
+        </HBox>
+
+        <HBox alignment="CENTER" styleClass="header-section" prefHeight="120">
+            <VBox alignment="CENTER" spacing="8">
+                <Label text="Privacy Policy" styleClass="title-label" />
+            </VBox>
+        </HBox>
+
+        <ScrollPane fitToWidth="true" prefHeight="400" prefWidth="700" styleClass="scroll-pane">
+            <VBox spacing="15" alignment="TOP_LEFT">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+
+                <Label text="Your Privacy Matters" styleClass="section-label" />
+
+                <Text wrappingWidth="660" textAlignment="JUSTIFY" styleClass="description-text">
+                    At Verve Planner, we respect and protect your privacy. This policy explains how we handle
+                    and safeguard your information while you use our application.
+                </Text>
+
+                <Label text="1. Information We Collect" styleClass="subsection-label" />
+                <Text wrappingWidth="660" textAlignment="JUSTIFY" styleClass="description-text">
+                    Verve Planner may collect minimal data such as user preferences, task entries,
+                    or theme selections. No personal data is shared or sold to third parties.
+                </Text>
+
+                <Label text="2. Data Usage" styleClass="subsection-label" />
+                <Text wrappingWidth="660" textAlignment="JUSTIFY" styleClass="description-text">
+                    Any data you enter is stored locally on your device to provide personalized
+                    features like task management and reminders. We do not transmit or store your
+                    data externally.
+                </Text>
+
+                <Label text="3. Data Security" styleClass="subsection-label" />
+                <Text wrappingWidth="660" textAlignment="JUSTIFY" styleClass="description-text">
+                    We apply standard security measures to ensure your data remains private and secure.
+                    However, users are encouraged to keep their device safe from unauthorized access.
+                </Text>
+
+                <Label text="4. Updates to This Policy" styleClass="subsection-label" />
+                <Text wrappingWidth="660" textAlignment="JUSTIFY" styleClass="description-text">
+                    We may update our Privacy Policy from time to time. Any changes will be reflected
+                    directly within this page to keep you informed.
+                </Text>
+
+                <Label text="5. Contact Us" styleClass="subsection-label" />
+                <Text wrappingWidth="660" textAlignment="JUSTIFY" styleClass="description-text">
+                    If you have any questions or concerns about this policy, please contact us at:
+                    info@vplanner.com
+                </Text>
+            </VBox>
+        </ScrollPane>
+
+        <HBox alignment="CENTER" styleClass="footer">
+            <Label text="© 2025 Verve Planner — All Rights Reserved." />
+        </HBox>
+
+    </VBox>
 
 </AnchorPane>

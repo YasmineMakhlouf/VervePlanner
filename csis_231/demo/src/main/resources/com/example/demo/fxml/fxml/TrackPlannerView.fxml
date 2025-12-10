@@ -1,14 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.demo.TrackPlannerController"
+      spacing="15" alignment="TOP_CENTER" style="-fx-background-color: #fdf6f0;" prefWidth="900" prefHeight="700">
 
-</AnchorPane>
+    <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 15; -fx-background-color: #ffdee3; -fx-border-radius: 10; -fx-background-radius: 10;" prefWidth="900">
+        <Label fx:id="dateLabel" text="Wednesday, 13 Nov 2025" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+        <Button fx:id="addTaskButton" text="+ Add Task" style="-fx-background-color: #ff6f91; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 10;"/>
+        <Button fx:id="settingsButton" text="⚙ Settings" style="-fx-background-color: #fff; -fx-border-color: #ff6f91; -fx-text-fill: #ff6f91; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 10;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <MenuButton fx:id="optionsMenu" text="⋮" style="-fx-font-size: 20px; -fx-background-color: transparent; -fx-text-fill: black;">
+            <items>
+                <MenuItem fx:id="calendarMenuItem" text="Calendar"/>
+                <MenuItem fx:id="privacyPolicyMenuItem" text="Privacy Policy"/>
+                <MenuItem fx:id="termsMenuItem" text="Terms and Conditions"/>
+                <MenuItem fx:id="aboutusMenuItem" text="AboutUs"/>
+                <MenuItem fx:id="logoutMenuItem" text="Logout" onAction="#onLogout"/>
+            </items>
+        </MenuButton>
+    </HBox>
+
+    <ScrollPane fitToWidth="true" prefHeight="500" style="-fx-background:transparent; -fx-border-color: transparent;">
+        <VBox fx:id="taskListVBox" spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+        </VBox>
+    </ScrollPane>
+
+    <HBox spacing="30" alignment="CENTER" style="-fx-padding: 15; -fx-background-color: #ffdee3; -fx-border-radius: 10; -fx-background-radius: 10;">
+        <Label fx:id="tasksSummaryLabel" text="0 / 0 tasks completed" style="-fx-font-weight: bold;"/>
+        <ProgressBar fx:id="completionProgressBar" prefWidth="200" style="-fx-accent: #ff6f91;"/>
+        <Label fx:id="streakLabel" text="🔥 Streak: 0 days" style="-fx-font-weight: bold;"/>
+    </HBox>
+
+    <HBox fx:id="waterTrackerBox" spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+        <Label text="💧 Water Tracker:" style="-fx-font-weight: bold;"/>
+        <HBox fx:id="bottlesBox" spacing="5"/>
+        <Label fx:id="progressLabel" text="0 / 5 glasses drank" style="-fx-font-weight: bold;"/>
+    </HBox>
+</VBox>
