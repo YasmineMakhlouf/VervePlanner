@@ -13,14 +13,12 @@
 
     <VBox spacing="30" alignment="TOP_CENTER" prefWidth="800" prefHeight="600">
 
-        <!-- Header -->
         <HBox alignment="CENTER" styleClass="header-section" prefHeight="120">
             <VBox alignment="CENTER" spacing="8">
                 <Label text="Login" styleClass="title-label"/>
             </VBox>
         </HBox>
 
-        <!-- Login Card -->
         <VBox spacing="20" alignment="CENTER" prefWidth="400"
               style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 5);">
             <padding>

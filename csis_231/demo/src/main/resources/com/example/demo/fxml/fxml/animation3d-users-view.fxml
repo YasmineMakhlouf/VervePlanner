@@ -11,7 +11,6 @@
             fx:controller="com.example.demo.Animation3DUsersController"
             style="-fx-background-color: #000000;">
 
-    <!-- Top section / header -->
     <top>
         <VBox spacing="10.0" style="-fx-background-color: #000000;">
             <padding>
@@ -33,7 +32,6 @@
         </VBox>
     </top>
 
-    <!-- Center section for 3D visualization -->
     <center>
         <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #000000;">
             <Label text="3D Visualization will appear here"
