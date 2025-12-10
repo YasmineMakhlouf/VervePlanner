@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<ScrollPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.demo.PersonalHubController"
+            fitToWidth="true"
+            style="-fx-background:transparent; -fx-border-color: transparent;"
+            prefWidth="900" prefHeight="700">
+
+    <VBox spacing="15" alignment="TOP_CENTER" style="-fx-background-color: #fdf6f0;" prefWidth="880">
+        <padding>
+            <Insets top="15" right="15" bottom="15" left="15"/>
+        </padding>
+
+        <HBox spacing="20" alignment="CENTER_LEFT"
+              style="-fx-background-color: #ffdee3; -fx-border-radius: 10; -fx-background-radius: 10;"
+              prefWidth="880">
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15"/>
+            </padding>
+
+            <Button fx:id="backButton" text="← Back to Planner"
+                    style="-fx-background-color: #fff; -fx-border-color: #ff6f91; -fx-text-fill: #ff6f91; -fx-font-weight: bold;"/>
+            <Label text="Personal Hub" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+        </HBox>
+
+        <VBox spacing="10" style="-fx-background-color: #ffe6a7; -fx-background-radius: 10;">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+
+            <Label text="🌈 Mood Tracker" style="-fx-font-weight: bold;"/>
+            <HBox spacing="10">
+                <ComboBox fx:id="moodComboBox" promptText="Select your mood" prefWidth="200"/>
+                <Button fx:id="saveMoodButton" text="Save Mood"
+                        style="-fx-background-color: #ff6f91; -fx-text-fill: white;"/>
+            </HBox>
+            <Label fx:id="moodStatusLabel" text="Mood not set yet."/>
+        </VBox>
+
+        <VBox spacing="10" style="-fx-background-color: #caffbf; -fx-background-radius: 10;">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+
+            <Label text="📝 Notes" style="-fx-font-weight: bold;"/>
+            <TextArea fx:id="noteTextArea" promptText="Write something..." prefHeight="100"/>
+            <Button fx:id="addNoteButton" text="Add Note" style="-fx-background-color: #ff6f91; -fx-text-fill: white;"/>
+            <VBox fx:id="notesBox" spacing="5"/>
+        </VBox>
+
+        <VBox spacing="10" style="-fx-background-color: #9bf6ff; -fx-background-radius: 10;">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+
+            <Label text="🏃 Habits" style="-fx-font-weight: bold;"/>
+            <HBox spacing="10">
+                <TextField fx:id="habitTextField" promptText="New habit" prefWidth="200"/>
+                <Button fx:id="addHabitButton" text="Add Habit"
+                        style="-fx-background-color: #ff6f91; -fx-text-fill: white;"/>
+            </HBox>
+            <VBox fx:id="habitsBox" spacing="5"/>
+        </VBox>
+
+        <VBox spacing="10" style="-fx-background-color: #bdb2ff; -fx-background-radius: 10;">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+
+            <Label text="💡 Daily Prompt" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="promptTextField" promptText="Write your prompt..." prefWidth="400"/>
+            <Button fx:id="savePromptButton" text="Save Prompt"
+                    style="-fx-background-color: #ff6f91; -fx-text-fill: white;"/>
+            <Label fx:id="promptStatusLabel" text="No prompt saved yet."/>
+        </VBox>
+
+    </VBox>
+</ScrollPane>

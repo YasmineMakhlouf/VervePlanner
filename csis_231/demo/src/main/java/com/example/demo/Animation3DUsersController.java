@@ -38,11 +38,13 @@ public class Animation3DUsersController {
     private BackendClient api;
     private Group root3D;
     private PerspectiveCamera camera;
+
     private Box platform;
     private final java.util.List<Group> userGroups = new java.util.ArrayList<>();
-    private double mousePosX, mousePosY;
+
+    // Mouse rotation
     private double mouseOldX, mouseOldY;
-    private final Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
+    private final Rotate rotateX = new Rotate(-20, Rotate.X_AXIS);
     private final Rotate rotateY = new Rotate(0, Rotate.Y_AXIS);
 
     public void setBackendClient(BackendClient backendClient) {
@@ -52,6 +54,7 @@ public class Animation3DUsersController {
     @FXML
     public void initialize() {
         if (api == null) api = new BackendClient();
+
         javafx.application.Platform.runLater(() -> {
             try {
                 setup3DScene();
@@ -65,43 +68,46 @@ public class Animation3DUsersController {
 
     private void setup3DScene() {
         root3D = new Group();
+
+        // Lighting
+        AmbientLight ambientLight = new AmbientLight(Color.WHITE);
+        PointLight light1 = new PointLight(Color.WHITE);
+        light1.setTranslateX(-500);
+        light1.setTranslateY(-500);
+        light1.setTranslateZ(-500);
+
+        PointLight light2 = new PointLight(Color.LIGHTPINK);
+        light2.setTranslateX(500);
+        light2.setTranslateY(500);
+        light2.setTranslateZ(500);
+
+        root3D.getChildren().addAll(ambientLight, light1, light2);
+        root3D.getTransforms().addAll(rotateX, rotateY);
+
+        // Camera
         camera = new PerspectiveCamera(true);
+        camera.getTransforms().add(new Translate(0, -200, -900));
         camera.setNearClip(0.1);
         camera.setFarClip(10000.0);
-        camera.setFieldOfView(45);
-        rotateX.setAngle(-20);
-        camera.getTransforms().addAll(new Translate(0, -200, -800), rotateX, rotateY);
-
-        AmbientLight ambientLight = new AmbientLight(Color.WHITE);
-        root3D.getChildren().add(ambientLight);
-
-        PointLight pointLight1 = new PointLight(Color.WHITE);
-        pointLight1.setTranslateX(-500); pointLight1.setTranslateY(-500); pointLight1.setTranslateZ(-500);
-        PointLight pointLight2 = new PointLight(Color.LIGHTBLUE);
-        pointLight2.setTranslateX(500); pointLight2.setTranslateY(500); pointLight2.setTranslateZ(500);
-
-        root3D.getChildren().addAll(pointLight1, pointLight2);
 
         SubScene subScene = new SubScene(root3D, 800, 600, true, SceneAntialiasing.BALANCED);
         subScene.setCamera(camera);
-        subScene.setFill(Color.rgb(20, 20, 30));
+        subScene.setFill(Color.rgb(0, 0, 0));
 
-        subScene.setOnMousePressed(me -> {
-            mousePosX = me.getSceneX();
-            mousePosY = me.getSceneY();
-            mouseOldX = me.getSceneX();
-            mouseOldY = me.getSceneY();
+        subScene.setOnMousePressed(event -> {
+            mouseOldX = event.getX();
+            mouseOldY = event.getY();
         });
 
-        subScene.setOnMouseDragged(me -> {
-            mouseOldX = mousePosX;
-            mouseOldY = mousePosY;
-            mousePosX = me.getSceneX();
-            mousePosY = me.getSceneY();
-            double deltaX = (mousePosX - mouseOldX);
-            double deltaY = (mousePosY - mouseOldY);
-            rotateY.setAngle(rotateY.getAngle() + deltaX * 0.5);
-            rotateX.setAngle(rotateX.getAngle() - deltaY * 0.5);
+        subScene.setOnMouseDragged(event -> {
+            double deltaX = event.getX() - mouseOldX;
+            double deltaY = event.getY() - mouseOldY;
+
+            rotateY.setAngle(rotateY.getAngle() + deltaX * 0.4);
+            rotateX.setAngle(rotateX.getAngle() - deltaY * 0.4);
+
+            mouseOldX = event.getX();
+            mouseOldY = event.getY();
         });
 
         rootPane.setCenter(subScene);
@@ -131,21 +137,25 @@ public class Animation3DUsersController {
 
     private void loadAndVisualizeData() {
         try {
-            if (statusLabel != null) statusLabel.setText("Loading user data...");
+            if (statusLabel != null) statusLabel.setText("Loading users...");
             List<User> users = api.fetchUsers();
-            if (statusLabel != null) statusLabel.setText("Loaded " + users.size() + " users. Visualizing...");
 
-            // Clear previous visualization
+            if (statusLabel != null)
+                statusLabel.setText("Loaded " + users.size() + " users. Visualizing...");
+
             for (Group g : userGroups) root3D.getChildren().remove(g);
             userGroups.clear();
 
             if (users.isEmpty()) {
-                if (statusLabel != null) statusLabel.setText("No users found!");
+                statusLabel.setText("No users found");
                 return;
             }
 
             visualizeUsers(users);
-            if (statusLabel != null) statusLabel.setText("Displaying " + users.size() + " users in 3D");
+
+            if (statusLabel != null)
+                statusLabel.setText("3D visualization complete");
+
         } catch (Exception e) {
             if (statusLabel != null) statusLabel.setText("Error: " + e.getMessage());
             new Alert(Alert.AlertType.ERROR, "Failed to load users: " + e.getMessage()).showAndWait();
@@ -155,9 +165,11 @@ public class Animation3DUsersController {
     private void visualizeUsers(List<User> users) {
         Random random = new Random();
         int count = users.size();
+
         int cols = (int) Math.ceil(Math.sqrt(count));
         int rows = (int) Math.ceil((double) count / cols);
-        double spacing = Math.max(120, Math.min(200, 1500 / Math.max(cols, rows)));
+
+        double spacing = 150;
         double startX = -(cols - 1) * spacing / 2;
         double startZ = -(rows - 1) * spacing / 2;
 
@@ -167,9 +179,12 @@ public class Animation3DUsersController {
             User user = users.get(i);
             int col = i % cols;
             int row = i / cols;
+
             double x = startX + col * spacing;
             double z = startZ + row * spacing;
+
             Group userGroup = createUserBar(user, i, x, z, random);
+
             root3D.getChildren().add(userGroup);
             userGroups.add(userGroup);
         }
@@ -177,27 +192,21 @@ public class Animation3DUsersController {
 
     private Group createUserBar(User user, int index, double x, double z, Random random) {
         Group group = new Group();
+
         int nameLength = user.getUsername() != null ? user.getUsername().length() : 5;
-        double barHeight = 30 + nameLength * 8;
-        double barWidth = 40;
-        double barDepth = 40;
+        double barHeight = 40 + nameLength * 7;
 
-        Box bar = new Box(barWidth, barHeight, barDepth);
-        int colorSeed = user.getId() != null ? user.getId().intValue() : user.getUsername().hashCode();
-        random.setSeed(colorSeed);
-        Color baseColor = Color.hsb((colorSeed % 360), 0.8 + random.nextDouble() * 0.2, 0.7 + random.nextDouble() * 0.3);
+        Box bar = new Box(40, barHeight, 40);
 
-        PhongMaterial material = new PhongMaterial();
-        material.setDiffuseColor(baseColor);
-        material.setSpecularColor(Color.WHITE);
-        material.setSpecularPower(32.0);
-        bar.setMaterial(material);
+        // Pink color for all cubes
+        PhongMaterial pinkMaterial = new PhongMaterial(Color.HOTPINK);
+        bar.setMaterial(pinkMaterial);
 
         bar.setTranslateX(x);
         bar.setTranslateY(-barHeight / 2);
         bar.setTranslateZ(z);
 
-        RotateTransition rt = new RotateTransition(Duration.seconds(4 + index * 0.2), bar);
+        RotateTransition rt = new RotateTransition(Duration.seconds(4), bar);
         rt.setAxis(Rotate.Y_AXIS);
         rt.setFromAngle(-5);
         rt.setToAngle(5);
@@ -208,9 +217,8 @@ public class Animation3DUsersController {
         group.getChildren().add(bar);
         createUserTextLabel(user, x, barHeight, z, group);
 
-        Box base = new Box(barWidth + 10, 5, barDepth + 10);
-        PhongMaterial baseMaterial = new PhongMaterial(Color.GRAY);
-        base.setMaterial(baseMaterial);
+        Box base = new Box(50, 5, 50);
+        base.setMaterial(new PhongMaterial(Color.BLACK)); // Base black
         base.setTranslateX(x);
         base.setTranslateY(2.5);
         base.setTranslateZ(z);
@@ -220,45 +228,42 @@ public class Animation3DUsersController {
     }
 
     private void createUserTextLabel(User user, double x, double barHeight, double z, Group parent) {
-        String displayName = user.getUsername() != null ? user.getUsername() : "Unknown";
-        if (displayName.length() > 15) displayName = displayName.substring(0, 12) + "...";
+        String name = user.getUsername() != null ? user.getUsername() : "Unknown";
+        if (name.length() > 15) name = name.substring(0, 12) + "...";
 
-        Text text = new Text(displayName);
-        text.setFill(Color.WHITE);
+        Text text = new Text(name);
         text.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        text.setFill(Color.WHITE);
 
-        double estimatedWidth = displayName.length() * 7;
-        double estimatedHeight = 18;
+        double width = text.getLayoutBounds().getWidth();
+        double padding = 10;
 
-        Rectangle bg = new Rectangle();
+        Rectangle bg = new Rectangle(width + padding * 2, 22);
         bg.setFill(Color.rgb(0, 0, 0, 0.7));
-        bg.setStroke(Color.WHITE);
-        bg.setStrokeWidth(1);
-        bg.setWidth(Math.max(estimatedWidth + 10, 80));
-        bg.setHeight(estimatedHeight);
-        bg.setX(-bg.getWidth() / 2);
-        bg.setY(-bg.getHeight() / 2);
+        bg.setStroke(Color.HOTPINK); // Pink border for text
 
-        text.setX(-estimatedWidth / 2);
-        text.setY(estimatedHeight / 4);
+        text.setTranslateX(-width / 2);
+        text.setTranslateY(7);
 
-        Group labelGroup = new Group();
-        labelGroup.getChildren().addAll(bg, text);
-        labelGroup.setTranslateX(x);
-        labelGroup.setTranslateY(-barHeight - 40);
-        labelGroup.setTranslateZ(z);
+        bg.setTranslateX(-bg.getWidth() / 2);
+        bg.setTranslateY(0);
 
-        parent.getChildren().add(labelGroup);
+        Group g = new Group(bg, text);
+        g.setTranslateX(x);
+        g.setTranslateY(-barHeight - 35);
+        g.setTranslateZ(z);
+
+        parent.getChildren().add(g);
     }
 
     private void createBasePlatform(int cols, int rows, double spacing, double startX, double startZ) {
         if (platform != null) root3D.getChildren().remove(platform);
-        double platformWidth = cols * spacing + 100;
-        double platformDepth = rows * spacing + 100;
 
-        platform = new Box(platformWidth, 5, platformDepth);
-        PhongMaterial platformMaterial = new PhongMaterial(Color.rgb(50, 50, 60));
-        platform.setMaterial(platformMaterial);
+        double width = cols * spacing + 150;
+        double depth = rows * spacing + 150;
+
+        platform = new Box(width, 5, depth);
+        platform.setMaterial(new PhongMaterial(Color.BLACK)); // Platform black
         platform.setTranslateX(startX + (cols - 1) * spacing / 2);
         platform.setTranslateY(2.5);
         platform.setTranslateZ(startZ + (rows - 1) * spacing / 2);

@@ -9,6 +9,7 @@ public class User {
     private String username;
     private String email;
     private String role;
+    private String passwordHash;
 
     public User() {}
 
@@ -23,7 +24,6 @@ public class User {
     }
 
     // getters/setters
-
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -32,6 +32,12 @@ public class User {
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+
+    public String getPasswordHash() { return passwordHash; }  // <-- Add getter
+    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }  // <-- Add setter
 
     public String toString() {
         return username + " (" + email + ")";

@@ -33,7 +33,7 @@ public class TrackPlannerController {
     private Button addTaskButton;
 
     @FXML
-    private Button settingsButton;
+    private Button hubButton;
 
     @FXML
     private MenuButton optionsMenu;
@@ -74,7 +74,7 @@ public class TrackPlannerController {
         dateLabel.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy")));
 
         addTaskButton.setOnAction(e -> addTask("New Task"));
-        settingsButton.setOnAction(e -> openSettings());
+        hubButton.setOnAction(e -> openHub());
         calendarMenuItem.setOnAction(e -> openCalendar());
         privacyPolicyMenuItem.setOnAction(e -> openPrivacyPolicy());
         termsMenuItem.setOnAction(e -> openTerms());
@@ -165,12 +165,12 @@ public class TrackPlannerController {
         card.setOnMouseDragged(event -> card.setLayoutY(event.getSceneY() - dragDelta[0]));
     }
 
-    private void openSettings() {
+    private void openHub() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/fxml/fxml/Settings.fxml"));
-            Stage stage = (Stage) settingsButton.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/fxml/fxml/PersonalHubView.fxml"));
+            Stage stage = (Stage) hubButton.getScene().getWindow();
             stage.setScene(new Scene(loader.load()));
-            stage.setTitle("Settings");
+            stage.setTitle("Personal");
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();

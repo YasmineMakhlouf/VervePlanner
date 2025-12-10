@@ -7,25 +7,38 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.demo.Animation3DUsersController">
+<BorderPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.demo.Animation3DUsersController"
+            style="-fx-background-color: #000000;">
+
+    <!-- Top section / header -->
     <top>
-        <VBox spacing="10.0" styleClass="header-section">
+        <VBox spacing="10.0" style="-fx-background-color: #000000;">
             <padding>
-                <Insets bottom="15.0" left="30.0" right="30.0" top="20.0"/>
+                <Insets top="20.0" right="30.0" bottom="15.0" left="30.0"/>
             </padding>
 
-            <Label text="3D User Visualization" styleClass="title-label"/>
+            <Label text="3D User Visualization"
+                   style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
 
             <HBox alignment="CENTER_LEFT" spacing="15.0">
-                <Button fx:id="refreshButton" text="🔄 Refresh Data" onAction="#onRefresh" styleClass="primary-button"/>
-                <Label fx:id="statusLabel" text="Ready to load data..." styleClass="status-label"/>
+                <Button fx:id="refreshButton" text="🔄 Refresh Data" onAction="#onRefresh"
+                        style="-fx-background-color: #ec4899; -fx-text-fill: #ffffff; -fx-font-weight: bold;"/>
+                <Label fx:id="statusLabel" text="Ready to load data..."
+                       style="-fx-text-fill: #ffffff; -fx-font-size: 14px;"/>
                 <HBox HBox.hgrow="ALWAYS"/>
-                <Button fx:id="backButton" text="← Back to List" onAction="#onBack" styleClass="secondary-button"/>
+                <Button fx:id="backButton" text="← Back to List" onAction="#onBack"
+                        style="-fx-background-color: #ec4899; -fx-text-fill: #ffffff; -fx-font-weight: bold;"/>
             </HBox>
         </VBox>
     </top>
 
+    <!-- Center section for 3D visualization -->
     <center>
-
+        <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #000000;">
+            <Label text="3D Visualization will appear here"
+                   style="-fx-text-fill: #ffffff; -fx-font-size: 16px;"/>
+        </VBox>
     </center>
+
 </BorderPane>

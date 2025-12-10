@@ -13,13 +13,20 @@
 
     <VBox spacing="30" alignment="TOP_CENTER" prefWidth="800" prefHeight="600">
 
+        <!-- Header -->
         <HBox alignment="CENTER" styleClass="header-section" prefHeight="120">
             <VBox alignment="CENTER" spacing="8">
                 <Label text="Login" styleClass="title-label"/>
             </VBox>
         </HBox>
 
-        <VBox spacing="15" alignment="CENTER" prefWidth="400">
+        <!-- Login Card -->
+        <VBox spacing="20" alignment="CENTER" prefWidth="400"
+              style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 5);">
+            <padding>
+                <Insets top="40" right="40" bottom="40" left="40"/>
+            </padding>
+
             <TextField fx:id="usernameField" promptText="Username" prefWidth="400" styleClass="form-field"/>
             <PasswordField fx:id="passwordField" promptText="Password" prefWidth="400" styleClass="form-field"/>
 
@@ -29,6 +36,7 @@
             <Label fx:id="errorLabel" textFill="red" styleClass="description-text"/>
         </VBox>
 
+        <!-- Footer -->
         <HBox alignment="CENTER" styleClass="footer">
             <Label text="© 2025 Verve Planner — All Rights Reserved."/>
         </HBox>

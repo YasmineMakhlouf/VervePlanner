@@ -11,7 +11,7 @@
     <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 15; -fx-background-color: #ffdee3; -fx-border-radius: 10; -fx-background-radius: 10;" prefWidth="900">
         <Label fx:id="dateLabel" text="Wednesday, 13 Nov 2025" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
         <Button fx:id="addTaskButton" text="+ Add Task" style="-fx-background-color: #ff6f91; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 10;"/>
-        <Button fx:id="settingsButton" text="⚙ Settings" style="-fx-background-color: #fff; -fx-border-color: #ff6f91; -fx-text-fill: #ff6f91; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 10;"/>
+        <Button fx:id="hubButton" text="Personal" style="-fx-background-color: #fff; -fx-border-color: #ff6f91; -fx-text-fill: #ff6f91; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 10;"/>
         <Region HBox.hgrow="ALWAYS"/>
 
         <MenuButton fx:id="optionsMenu" text="⋮" style="-fx-font-size: 20px; -fx-background-color: transparent; -fx-text-fill: black;">

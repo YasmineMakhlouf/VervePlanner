@@ -58,16 +58,31 @@ public class UserFormController {
                 User newUser = new User();
                 newUser.setUsername(username);
                 newUser.setEmail(email);
+
+                String generatedPassword = generateRandomPassword(10); // 10 chars
+                newUser.setPasswordHash(generatedPassword);
+
                 api.createUser(newUser);
+
+                new Alert(Alert.AlertType.INFORMATION, "User created with password: " + generatedPassword).showAndWait();
             }
 
-            if (onUserSaved != null) onUserSaved.run();
-            closeForm();
 
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Save failed: " + e.getMessage()).showAndWait();
         }
     }
+
+    private String generateRandomPassword(int length) {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+        StringBuilder sb = new StringBuilder();
+        java.util.Random rnd = new java.util.Random();
+        for (int i = 0; i < length; i++) {
+            sb.append(chars.charAt(rnd.nextInt(chars.length())));
+        }
+        return sb.toString();
+    }
+
 
     @FXML
     private void onCancel() {
